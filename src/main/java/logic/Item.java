@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Item {
 	private int id;
-	@NotEmpty(message="상품명을 입력하세요")
+	@NotEmpty(message="상품명을 입력하세요") // 값이 없거나 빈문자열일경우
 	private String name;
 	@Min(value=10,message="10원이상 가능합니다.")
 	@Max(value=100000,message="10만원이하만 가능합니다.")
@@ -16,7 +16,8 @@ public class Item {
 	@NotEmpty(message="상품설명을 입력하세요")
 	private String description;
 	private String pictureUrl;
-	private MultipartFile picture;
+	private MultipartFile picture; // picture file에서 업로드된 파일의 내용
+	//
 	public int getId() {
 		return id;
 	}

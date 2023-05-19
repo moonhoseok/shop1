@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=URF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- /shop1/src/main/webapp/WEB-INF/view/item/detail.jsp -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -24,7 +24,9 @@
 						<input type="hidden" name="id" value="${item.id}">
 						<table>
 							<tr><td><select name="quantity">
-							<c:forEach begin="1" end="10" var="1"><option>${i}</option>
+							<c:forEach begin="1" end="10" var="i">
+							
+							<option>${i}</option>
 							</c:forEach>
 							</select></td>
 							<td><input type="submit" value="장바구니">
