@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.ItemDao;
+import dao.UserDao;
 
 
 
@@ -18,6 +19,8 @@ import dao.ItemDao;
 public class ShopService {
 	@Autowired // ItemDao 객체주입.
 	private ItemDao itemdao;
+	@Autowired //  객체주입.
+	private UserDao userdao;
 	
 	public List<Item> itemList(){
 		return itemdao.list();
@@ -71,6 +74,16 @@ public class ShopService {
 	public void itemDelete(Integer id) {
 		itemdao.delete(id);
 		
+	}
+
+	public void userinsert(User user) {
+		userdao.insert(user);
+		
+	}
+
+	public User selectUserOne(String userid) {
+		
+		return userdao.selectOne(userid);
 	}
 
 }
