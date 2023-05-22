@@ -72,6 +72,11 @@ public class userController {
 			bresult.reject("error.login.id");//아이디를 확인하세요
 			mav.getModel().putAll(bresult.getModel());
 		}
+		//2.비밀번호 검증
+		// 일치 : session.setAttribute("loginUser",dbUser) =>로그인 정보
+		//불일치 : 비밀번호를 확인하세요 출력.(error.login.password)
+		
+		//3. mypage로 페이지 이동 => 404 오류 발생(임시)
 		return mav;
 	}
 }
