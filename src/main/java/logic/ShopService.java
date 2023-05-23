@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.ItemDao;
+import dao.SaleDao;
+import dao.SaleItemDao;
 import dao.UserDao;
 
 
@@ -21,6 +23,10 @@ public class ShopService {
 	private ItemDao itemdao;
 	@Autowired //  객체주입.
 	private UserDao userdao;
+	@Autowired //  객체주입.
+	private SaleDao saledao;
+	@Autowired //  객체주입.
+	private SaleItemDao saleItemdao;
 	
 	public List<Item> itemList(){
 		return itemdao.list();
@@ -84,6 +90,27 @@ public class ShopService {
 	public User selectUserOne(String userid) {
 		
 		return userdao.selectOne(userid);
+	}
+	/*
+	 * 1. 로그인정보, 장바구니정보 => sale, saleitem 테이블의 데이터 저장
+	 * 2. 결과는 Sale 객체에 저장
+	 * 		-sale테이블 저장 : saleid값 구하기. 최대값 + 1
+	 * 		- saleitem 테이블 저장 : Cart 데이터를 이용하여 저장
+	 */
+	public Sale checkend(User loginUser, Cart cart) {
+		int maxsaleid = saledao.getMaxSaleId(); // saleid 최대값 조회
+		Sale sale = new Sale();
+		sale.setSaleid(maxsaleid+1);			// sale 객체 만들기	
+		sale.setUser(loginUser);				// sale 객체 만들기
+		sale.setUserid(loginUser.getUserid()); // sale 객체 만들기
+		saledao.insert(sale); // sale 테이블에 데이터 추가
+		int seq = 0;
+		for(ItemSet is : cart.getItemSetList()) {
+			SaleItem saleItem = new SaleItem(sale.getSaleid(),++seq,is);
+			sale.getItemList().add(saleItem);
+			saleItemdao.insert(saleItem); //saleitem 테이블에 데이터 추가
+		}
+		return sale; // 주문정보, 주문상품정보, 상품정보, 사용자정보
 	}
 
 }

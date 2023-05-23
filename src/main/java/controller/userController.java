@@ -1,6 +1,8 @@
 package controller;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,8 @@ public class userController {
 	}
 	
 	@PostMapping("login")
-	public ModelAndView login(@Valid User user, BindingResult bresult) {
+	public ModelAndView login(@Valid User user, BindingResult bresult
+			,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
@@ -65,8 +68,9 @@ public class userController {
 			return mav;
 		}
 		 // 1. userid 맞는 User를 db에서 조회하기
+		User dbUser = null;
 		try {
-			User dbUser = service.selectUserOne(user.getUserid());
+			dbUser = service.selectUserOne(user.getUserid());
 		} catch (EmptyResultDataAccessException e) { //조회된 데이터 없는 경우 발생
 			e.printStackTrace();
 			bresult.reject("error.login.id");//아이디를 확인하세요
@@ -77,6 +81,13 @@ public class userController {
 		//불일치 : 비밀번호를 확인하세요 출력.(error.login.password)
 		
 		//3. mypage로 페이지 이동 => 404 오류 발생(임시)
+		if(user.getPassword().equals(dbUser.getPassword())) { //정상 로그인
+			session.setAttribute("loginUser", dbUser);
+			mav.setViewName("redirect:mypage");
+		}else {  
+			bresult.reject("error.login.password");
+			mav.getModel().putAll(bresult.getModel());
+		}		
 		return mav;
 	}
 }
