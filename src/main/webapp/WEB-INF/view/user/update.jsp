@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!-- /shop1/src/main/webapp/WEB-INF/view/user/join.jsp -->
-<%@ include file="/WEB-INF/view/jspHeader.jsp" %>  
+<!-- /shop1/src/main/webapp/WEB-INF/view/user/update.jsp -->
+<%@ include file="/WEB-INF/view/jspHeader.jsp" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사용자 등록</title>
+<title>사용자 정보 수정</title>
 </head>
 <body>
-<h2>사용자 등록</h2>
-<form:form modelAttribute="user" method="post" action="join">
+<h2>사용자 정보 수정</h2>
+<form:form modelAttribute="user" method="post" action="update">
 	<spring:hasBindErrors name="user">
 		<font color="red">
 			<c:forEach items="${errors.globalErrors}" var="error">
@@ -30,7 +30,7 @@
 		<tr>
 			<td>아이디</td>
 			<td>
-			<form:input path="userid"/>
+			<form:input path="userid" readonly="true" />
 			<font color="red"><form:errors path="userid"/></font>
 			</td>
 		</tr>
@@ -73,7 +73,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input type="submit" value="회원가입"></td>
+			<td><input type="submit" value="회원정보수정"></td>
 			<td><input type="reset" value="다시입력"></td>
 		</tr>
 	</table>

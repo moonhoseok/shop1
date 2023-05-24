@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -38,6 +39,14 @@ public class SaleDao {
 		String sql = " insert into sale (saleid, userid, saledate)"
 				+ " values(:saleid, :userid, now() )";
 		template.update(sql, param);
+	}
+
+	public List<Sale> list(String userid) {
+		String sql = "select * from sale where userid=:userid"
+				+ " order by saleid desc"; //최근 주문 순서로 조회
+		param.clear();
+		param.put("userid", userid);
+		return template.query(sql,param,mapper);
 	}
 
 }
